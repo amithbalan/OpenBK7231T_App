@@ -411,8 +411,27 @@ extern "C" commandResult_t IR_Send_Cmd(const void *context, const char *cmd, con
 						}
 					}
 				} else {
-					// TODO: implement longer protocols
-					ADDLOG_ERROR(LOG_FEATURE_IR, (char *)"IRSend currently only protocol with up to 64bits are supported", args);
+					// longer protocols (AC state arrays, e.g. VOLTAS,80,0x33280027...)
+					uint8_t state[64];
+					uint16_t nbytes = bits / 8;
+					char *_data = p;
+					if (!strncmp(_data, "0x", 2) || !strncmp(_data, "0X", 2)) {
+						_data += 2;
+					}
+					if (protocol == decode_type_t::UNKNOWN || nbytes == 0 || nbytes > sizeof(state) || strlen(_data) < (size_t)(nbytes * 2)) {
+						ADDLOG_ERROR(LOG_FEATURE_IR, (char *)"IRSend bad state args [%s]", args);
+						return CMD_RES_BAD_ARGUMENT;
+					}
+					for (int i = 0; i < nbytes; i++) {
+						char b[3] = { _data[i * 2], _data[i * 2 + 1], 0 };
+						state[i] = (uint8_t)strtol(b, NULL, 16);
+					}
+					if (pIRsend->send(protocol, state, nbytes)) {
+						pIRsend->delay(100);
+						ADDLOG_INFO(LOG_FEATURE_IR, (char *)"IR send state: protocol %d, %d bytes", (int)protocol, (int)nbytes);
+						return CMD_RES_OK;
+					}
+					ADDLOG_ERROR(LOG_FEATURE_IR, (char *)"IR send state failed: protocol %d", (int)protocol);
 					return CMD_RES_BAD_ARGUMENT;
 				}
 			} 
@@ -681,8 +700,8 @@ extern "C" void DRV_IR_Init() {
 		// setup IRrecv pin as input
 		//bk_gpio_config_input_pup((GPIO_INDEX)pin); // enabled by enableIRIn
 
-		//TODO: we should specify buffer size (now set to 1024), timeout (now 90ms) and tolerance 
-		 ourReceiver = new IRrecv(pin);
+		// buffer 1024 entries, 90ms frame timeout - long AC protocol frames (Voltas etc) need >100 entries
+		 ourReceiver = new IRrecv(pin, 1024, 90, true);
 		 ourReceiver->enableIRIn(pup);
 	}
 
