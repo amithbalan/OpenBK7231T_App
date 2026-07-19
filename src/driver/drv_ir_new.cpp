@@ -177,7 +177,9 @@ SpoofIrReceiver IrReceiver;
 // we simply note the numbers into a rolling buffer, assume the first is a mark()
 // and then every 50us service the rolling buffer, changing the PWM from 0 duty to 50% duty
 // appropriately.
-#define SEND_MAXBITS 128
+// long AC protocol frames (Voltas = ~166 mark/space entries per frame) sent twice
+// need far more than the old 128-bit budget
+#define SEND_MAXBITS 512
 
 class myIRsend : public IRsend {
 public:
