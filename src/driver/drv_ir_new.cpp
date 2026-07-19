@@ -426,9 +426,21 @@ extern "C" commandResult_t IR_Send_Cmd(const void *context, const char *cmd, con
 						char b[3] = { _data[i * 2], _data[i * 2 + 1], 0 };
 						state[i] = (uint8_t)strtol(b, NULL, 16);
 					}
-					if (pIRsend->send(protocol, state, nbytes)) {
+					// optional trailing ,frames - AC remotes typically send the frame twice per press
+					int frames = 2;
+					_data += nbytes * 2;
+					if (*_data == ',') {
+						frames = strtol(_data + 1, NULL, 10);
+						if (frames < 1) frames = 1;
+						if (frames > 5) frames = 5;
+					}
+					bool ok = true;
+					for (int r = 0; r < frames && ok; r++) {
+						ok = pIRsend->send(protocol, state, nbytes);
 						pIRsend->delay(100);
-						ADDLOG_INFO(LOG_FEATURE_IR, (char *)"IR send state: protocol %d, %d bytes", (int)protocol, (int)nbytes);
+					}
+					if (ok) {
+						ADDLOG_INFO(LOG_FEATURE_IR, (char *)"IR send state: protocol %d, %d bytes, %d frames", (int)protocol, (int)nbytes, frames);
 						return CMD_RES_OK;
 					}
 					ADDLOG_ERROR(LOG_FEATURE_IR, (char *)"IR send state failed: protocol %d", (int)protocol);
