@@ -204,6 +204,7 @@ OBKM_SRC_CXX += $(OBK_SRCS)libraries/IRremoteESP8266/src/ir_Aiwa.cpp
 OBKM_SRC_CXX += $(OBK_SRCS)libraries/IRremoteESP8266/src/ir_Amcor.cpp
 OBKM_SRC_CXX += $(OBK_SRCS)libraries/IRremoteESP8266/src/ir_Argo.cpp
 OBKM_SRC_CXX += $(OBK_SRCS)libraries/IRremoteESP8266/src/ir_Arris.cpp
+OBKM_SRC_CXX += $(OBK_SRCS)libraries/IRremoteESP8266/src/ir_BluestarHeavy.cpp
 OBKM_SRC_CXX += $(OBK_SRCS)libraries/IRremoteESP8266/src/ir_Bosch.cpp
 OBKM_SRC_CXX += $(OBK_SRCS)libraries/IRremoteESP8266/src/ir_Bose.cpp
 OBKM_SRC_CXX += $(OBK_SRCS)libraries/IRremoteESP8266/src/ir_Carrier.cpp

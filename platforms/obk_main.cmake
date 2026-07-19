@@ -196,6 +196,7 @@ set(OBKM_SRC_CXX
 	${OBK_SRCS}libraries/IRremoteESP8266/src/ir_Amcor.cpp
 	${OBK_SRCS}libraries/IRremoteESP8266/src/ir_Argo.cpp
 	${OBK_SRCS}libraries/IRremoteESP8266/src/ir_Arris.cpp
+	${OBK_SRCS}libraries/IRremoteESP8266/src/ir_BluestarHeavy.cpp
 	${OBK_SRCS}libraries/IRremoteESP8266/src/ir_Bosch.cpp
 	${OBK_SRCS}libraries/IRremoteESP8266/src/ir_Bose.cpp
 	${OBK_SRCS}libraries/IRremoteESP8266/src/ir_Carrier.cpp

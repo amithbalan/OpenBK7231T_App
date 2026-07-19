@@ -710,6 +710,8 @@ uint16_t IRsend::defaultBits(const decode_type_t protocol) {
       return kCoronaAcBits;
     case CARRIER_AC84:
       return kCarrierAc84Bits;
+    case BLUESTARHEAVY:
+      return kBluestarHeavyBits;
     case CARRIER_AC128:
       return kCarrierAc128Bits;
     case DAIKIN:
@@ -1194,6 +1196,11 @@ bool IRsend::send(const decode_type_t type, const uint8_t *state,
       sendCarrierAC84(state, nbytes);
       break;
 #endif  // SEND_CARRIER_AC84
+#if SEND_BLUESTARHEAVY
+    case BLUESTARHEAVY:
+      sendBluestarHeavy(state, nbytes);
+      break;
+#endif  // SEND_BLUESTARHEAVY
 #if SEND_CARRIER_AC128
     case CARRIER_AC128:
       sendCarrierAC128(state, nbytes);

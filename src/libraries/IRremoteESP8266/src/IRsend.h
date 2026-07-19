@@ -614,6 +614,11 @@ class IRsend {
                        const uint16_t nbytes = kCarrierAc84StateLength,
                        const uint16_t repeat = kNoRepeat);
 #endif  // SEND_CARRIER_AC84
+#if SEND_BLUESTARHEAVY
+  void sendBluestarHeavy(const unsigned char data[],
+                       const uint16_t nbytes = kBluestarHeavyStateLength,
+                       const uint16_t repeat = kNoRepeat);
+#endif  // SEND_BLUESTARHEAVY
 #if SEND_CARRIER_AC128
   void sendCarrierAC128(const uint8_t data[],
                         uint16_t nbytes = kCarrierAc128StateLength,
