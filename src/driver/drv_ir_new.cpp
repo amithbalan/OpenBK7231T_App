@@ -839,6 +839,8 @@ extern "C" void DRV_IR_RunFrame() {
 					String description = IRAcUtils::resultAcToString(&results);
 					ADDLOG_INFO(LOG_FEATURE_IR, (char *)"IRAC %s", description.c_str());
 					#endif //ENABLE_IRAC
+					snprintf(out, sizeof(out), "IR %s,%d,%s", proto_name.c_str(), (int)results.bits, resultToHexidecimal(&results).c_str());
+					ADDLOG_INFO(LOG_FEATURE_IR, (char *)out);
 				}
 				// if user wants us to publish every received IR data, do it now
 				if (CFG_HasFlag(OBK_FLAG_IR_PUBLISH_RECEIVED)) {
